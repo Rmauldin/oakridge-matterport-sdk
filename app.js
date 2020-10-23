@@ -1,8 +1,8 @@
 'use strict';
 const key = "2d4dfb9fd6414902b663c25a6c767cfa";
 const sdkVersion = '3.5';
-const params = "&emb=1&play=1";
-const menuParams = "&emb=1&play=1&qs=1";
+const params = "&play=1";
+const menuParams = "&play=1&qs=1";
 const initSpace = "YJx1weuenGk";
 const spaces = {
     "Oakridge Elementary School": "YJx1weuenGk", 
@@ -10,8 +10,8 @@ const spaces = {
     "Oakridge Lunch Area And Playground": "TvkHYt3AYKe", 
     "Oakridge Preschool": "ZMS7QHBGaDH"
 };
-
 let arrow, title, menu, iframe, modal;
+// const school_regex = /\((https?:\/\/(?:www\.)?oakridgeschool.org\/?.*?)\)/;
 
 document.addEventListener('DOMContentLoaded', ()=>{
     arrow = document.getElementById('space-menu-toggle');
@@ -50,7 +50,7 @@ async function loadedShowcaseHandler(sdk){
     // functions
     // TODO: setupGallery
     // TODO: populateGallery
-
+    
     function setupObservers(){
         sdk.App.state.waitUntil(state => state.phase === 'appphase.starting')
         .then(() => {
@@ -58,16 +58,27 @@ async function loadedShowcaseHandler(sdk){
         });
     }
 
-    async function setupTags(){        
-        sdk.on(sdk.Mattertag.Event.LINK_OPEN, (tagSid, url) => {
-            menu.classList.add('hidden');
-            title.classList.add('hidden');
-        });
-        return await sdk.Mattertag.getData();
+    async function setupTags(){
+
+        const tags = await sdk.Mattertag.getData();
+        
+
+        if(iframe.getAttribute('src').includes('emb=1')){
+            sdk.on(sdk.Mattertag.Event.LINK_OPEN, (tagSid, url) => {
+                menu.classList.add('hidden');
+                title.classList.add('hidden');
+                arrow.children[0].style.transform = `rotate(315deg)`;
+            });
+        }
+
+        return tags;
+
+    
     }
 
     function setupGallery(tags){
         const gallery = document.getElementById('gallery');
+
     }
 
     function populateGallery(gallery, urls){
