@@ -1,5 +1,5 @@
 'use strict';
-const key = "fe2587b5509f46949a166ee38ec362b6"; // Ryan's specific dev key
+const key = "2d4dfb9fd6414902b663c25a6c767cfa";
 const sdkVersion = '3.5';
 const params = "&emb=1&play=1";
 const menuParams = "&emb=1&play=1&qs=1";
@@ -50,7 +50,7 @@ async function loadedShowcaseHandler(sdk){
     // functions
     // TODO: setupGallery
     // TODO: populateGallery
-    
+
     function setupObservers(){
         sdk.App.state.waitUntil(state => state.phase === 'appphase.starting')
         .then(() => {
