@@ -69,8 +69,8 @@
     width: 5px;
     height: 5px;
     padding: 1px;
-    transform: rotate(315deg);
-    -webkit-transform: rotate(315deg);
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
 }
 .hidden{
     display: none;

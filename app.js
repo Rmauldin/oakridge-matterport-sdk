@@ -32,7 +32,7 @@ function showcaseLoader(){
         .catch(e => {
             const menu = document.getElementById('menu-container');
             menu.style.display = 'flex';
-            console.error(e)
+            console.error(e);
         });
     }catch(e){
         console.error("Could not connect to SDK: ", e);
@@ -78,7 +78,7 @@ async function loadedShowcaseHandler(sdk){
 
     function setupGallery(tags){
         const gallery = document.getElementById('gallery');
-
+        
     }
 
     function populateGallery(gallery, urls){
