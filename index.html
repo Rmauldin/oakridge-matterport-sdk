@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Oakridge Schools Matterport Application</title>
+        <script src="https://static.matterport.com/showcase-sdk/2.0.1-0-g64e7e88/sdk.js"></script>
+        <link href="style.css" type="text/css" rel="stylesheet" />
+    </head>
+    <body>
+        <div id="showcase-container">
+            <div id="gallery"></div>
+            <iframe
+            id="showcase"
+            width="100%"
+            height="100%"
+            frameborder="0"
+            allow="xr-spatial-tracking; fullscreen"
+        ></iframe>
+        <div id="menu-container">
+            <div id="space-menu-toggle">
+                <span id="arrow"></span>
+            </div>
+            <div id="menu-title">School Navigation</div>
+            <ul id="space-menu"></ul>
+        </div>
+        </div>
+    </body>
+    <script src="app.js"></script>
+</html>
