@@ -12,7 +12,7 @@ body{
 }
 #menu-container{
     position: absolute;
-    top: 40vh;
+    top: calc(100% - 370px);
     left: 0;
     display: none;
     flex-flow: row wrap;
@@ -26,6 +26,7 @@ body{
     max-width: 358px;
     box-sizing: border-box;
     z-index: 1;
+    overflow-x: hidden;
 }
 #menu-container > * {
     background: rgba(0,0,0,.45);
@@ -35,23 +36,23 @@ body{
     background: rgba(0,0,0,.75);
 }
 #space-menu-toggle{
-    font-size: 10px;
-    flex: 0 0 auto;
-    width: 20px;
-    height: 50px;
-    padding-left: 7px;
-    padding-right: 7px;
-    line-height: 50px;
+    flex: 1 0 10%;
+    line-height: 40px;
     text-align: center;
+    min-width: 35px;
 }
 #space-menu-toggle:hover{
     background: rgba(0,0,0,.85);
     cursor: pointer;
 }
 #menu-title{
-    flex: 6 0 auto;
-    font-size: 24px;
-    padding: .75rem;
+    display: flex;
+    flex: 0 0 90%;
+    font-size: 18px;
+    align-items: center;
+}
+#menu-title > span{
+    padding-left: .5rem;
 }
 #space-menu{
     flex: 0 0 90%;
@@ -60,6 +61,7 @@ body{
 }
 #space-menu > *{
     padding: .5rem;
+    font-size: 14px;
 }
 #space-menu > *:hover{
     background: rgba(0,0,0,.85);
@@ -76,9 +78,22 @@ body{
     -webkit-transform: rotate(135deg);
 }
 .hidden{
+    /* display: none; */
+    width: 0;
+}
+.hidden > *{
     display: none;
 }
+
 #gallery{
     display: flex;
     flex-flow: row nowrap;
+    height: 130px;
+    /* width: fit-content; */
+    background: rgba(0,0,0,.45);
+    position: absolute;
+    top: 0;
+    right: 410px;
+    left: 400px;
+    max-width: calc(100% - 379px - 410px);
 }

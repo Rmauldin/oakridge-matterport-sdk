@@ -1,14 +1,14 @@
 'use strict';
-const key = "2d4dfb9fd6414902b663c25a6c767cfa";
+const key = "fe2587b5509f46949a166ee38ec362b6"; // Ryan's specific dev key
 const sdkVersion = '3.5';
 const params = "&play=1";
 const menuParams = "&play=1&qs=1";
 const initSpace = "YJx1weuenGk";
 const spaces = {
-    "Oakridge Elementary School": "YJx1weuenGk", 
-    "Oakridge Middle School": "MZuYopSBizg", 
-    "Oakridge Lunch Area And Playground": "TvkHYt3AYKe", 
-    "Oakridge Preschool": "ZMS7QHBGaDH"
+    "Elementary School": "YJx1weuenGk", 
+    "Middle School": "MZuYopSBizg", 
+    "Lunch Area And Playground": "TvkHYt3AYKe", 
+    "Preschool": "ZMS7QHBGaDH"
 };
 let arrow, title, menu, iframe, modal;
 // const school_regex = /\((https?:\/\/(?:www\.)?oakridgeschool.org\/?.*?)\)/;
@@ -43,19 +43,32 @@ async function loadedShowcaseHandler(sdk){
     console.debug('SDK Connected');
     const menu_container = document.getElementById('menu-container');
 
-    setupObservers();
+    const observers = setupObservers();
     const tags = await setupTags();
-    setupGallery(tags);
+    setupGallery(tags, observers.pose);
 
     // functions
     // TODO: setupGallery
     // TODO: populateGallery
     
     function setupObservers(){
+        const observers = {}
+
+        sdk.App.state.subscribe(state => {
+            observers.state = state;
+        });
+
         sdk.App.state.waitUntil(state => state.phase === 'appphase.starting')
         .then(() => {
             menu_container.style.display = 'flex';
+        })
+        .catch(console.error);
+
+        sdk.Sweep.data.subscribe(pose => {
+            observers.pose = pose;
         });
+
+        return observers;
     }
 
     async function setupTags(){
@@ -76,21 +89,36 @@ async function loadedShowcaseHandler(sdk){
     
     }
 
-    function setupGallery(tags){
+    function setupGallery(tags, pose){
         const gallery = document.getElementById('gallery');
-        
+        let imageTags = getClosestImageTags(tags, pose);
+        console.log(imageTags);
+        sdk.on(sdk.Sweep.Event.ENTER, (oldID, newID) => {
+            imageTags = getClosestImageTags(tags, pose);
+            console.log(imageTags);
+        });
+
+        function populateGallery(gallery, urls){
+
+        }
+        function euclideanDistance3D(pos1, pos2){
+            return Math.sqrt( 
+                Math.pow(pos1.x - pos2.x, 2) +
+                Math.pow(pos1.y - pos2.y, 2) +
+                Math.pow(pos1.z - pos2.z, 2)
+             );
+        }
+    
+        function getClosestImageTags(tags, pose){
+            let imageTags = [];
+            tags.filter(tag => tag.media.type === 'photo')
+            .forEach(tag => {
+                imageTags.push(tag);
+            });
+            return imageTags;
+        }
     }
 
-    function populateGallery(gallery, urls){
-
-    }
-    function euclideanDistance3D(pos1, pos2){
-        return Math.sqrt( 
-            Math.pow(pos1.x - pos2.x, 2) +
-            Math.pow(pos1.y - pos2.y, 2) +
-            Math.pow(pos1.z - pos2.z, 2)
-         );
-    }
 }   
 
 function setupSpaceMenu(){
