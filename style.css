@@ -86,7 +86,7 @@ body{
 }
 
 #gallery{
-    display: flex;
+    display: none;
     flex-flow: row nowrap;
     height: 130px;
     /* width: fit-content; */

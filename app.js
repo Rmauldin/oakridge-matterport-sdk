@@ -4,6 +4,7 @@ const sdkVersion = '3.5';
 const params = "&play=1";
 const menuParams = "&play=1&qs=1";
 const initSpace = "YJx1weuenGk";
+const galleryDistance = 10; // meters
 const spaces = {
     "Elementary School": "YJx1weuenGk", 
     "Middle School": "MZuYopSBizg", 
@@ -42,14 +43,14 @@ function showcaseLoader(){
 async function loadedShowcaseHandler(sdk){
     console.debug('SDK Connected');
     const menu_container = document.getElementById('menu-container');
-
+    const gallery = document.getElementById('gallery');
     const observers = setupObservers();
     const tags = await setupTags();
-    setupGallery(tags, observers.pose);
+    setupGallery(tags);
 
     // functions
-    // TODO: setupGallery
-    // TODO: populateGallery
+    // TODO populateGallery
+    // TODO getClosestImageTags
     
     function setupObservers(){
         const observers = {}
@@ -61,13 +62,14 @@ async function loadedShowcaseHandler(sdk){
         sdk.App.state.waitUntil(state => state.phase === 'appphase.starting')
         .then(() => {
             menu_container.style.display = 'flex';
+            gallery.style.display = 'flex';
         })
         .catch(console.error);
 
-        sdk.Sweep.data.subscribe(pose => {
+        sdk.Camera.pose.subscribe(pose => {
             observers.pose = pose;
         });
-
+        
         return observers;
     }
 
@@ -89,16 +91,16 @@ async function loadedShowcaseHandler(sdk){
     
     }
 
-    function setupGallery(tags, pose){
-        const gallery = document.getElementById('gallery');
-        let imageTags = getClosestImageTags(tags, pose);
-        console.log(imageTags);
+    function setupGallery(tags){
+        let imageTags = getClosestImageTags();
+
         sdk.on(sdk.Sweep.Event.ENTER, (oldID, newID) => {
-            imageTags = getClosestImageTags(tags, pose);
+            imageTags = getClosestImageTags(tags, observers['pose']);
             console.log(imageTags);
+            console.log(observers['pose']);
         });
 
-        function populateGallery(gallery, urls){
+        function populateGallery(gallery, images){
 
         }
         function euclideanDistance3D(pos1, pos2){
@@ -109,10 +111,14 @@ async function loadedShowcaseHandler(sdk){
              );
         }
     
-        function getClosestImageTags(tags, pose){
+        function getClosestImageTags(){
             let imageTags = [];
-            tags.filter(tag => tag.media.type === 'photo')
+            if(!observers['pose']) return imageTags;
+            tags
+            .filter(tag => tag.media.type === 'photo')
+            .filter(tag => euclideanDistance3D(observers['pose'].position, tag.anchorPosition) <= galleryDistance)
             .forEach(tag => {
+                // TODO extract tags and src
                 imageTags.push(tag);
             });
             return imageTags;
