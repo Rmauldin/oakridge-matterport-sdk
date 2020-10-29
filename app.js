@@ -4,7 +4,7 @@ const sdkVersion = '3.5';
 const params = "&play=1";
 const menuParams = "&play=1&qs=1";
 const initSpace = "YJx1weuenGk";
-const galleryDistance = 10; // meters
+const galleryDistance = 15; // meters
 const spaces = {
     "Elementary School": "YJx1weuenGk", 
     "Middle School": "MZuYopSBizg", 
@@ -93,35 +93,45 @@ async function loadedShowcaseHandler(sdk){
 
     function setupGallery(tags){
         let imageTags = getClosestImageTags();
-
+        populateGallery(imageTags);
         sdk.on(sdk.Sweep.Event.ENTER, (oldID, newID) => {
-            imageTags = getClosestImageTags(tags, observers['pose']);
-            console.log(imageTags);
-            console.log(observers['pose']);
+            imageTags = getClosestImageTags();
+            populateGallery(imageTags);
         });
 
-        function populateGallery(gallery, images){
+        function populateGallery(imageTags){
+            while(gallery.firstChild){
+                gallery.removeChild(gallery.firstChild);
+            }
+            imageTags.forEach(tag => {
+                const cont = document.createElement('div');
+                const imgEle = document.createElement('img');
+                cont.insertAdjacentElement('beforeend', imgEle);
 
+                imgEle.setAttribute('src', tag.media.src);
+                imgEle.setAttribute('alt', "");
+
+                cont.addEventListener('click', () => {
+                    sdk.Mattertag.navigateToTag(tag.sid, sdk.Mattertag.Transition.FLY);
+                });
+
+                gallery.insertAdjacentElement('beforeend', cont);
+            });
         }
+    
+        function getClosestImageTags(){
+            if(!observers['pose']) return [];
+            return tags
+            .filter(tag => tag.media.type === 'photo')
+            .filter(tag => euclideanDistance3D(observers['pose'].position, tag.anchorPosition) <= galleryDistance);
+        }
+
         function euclideanDistance3D(pos1, pos2){
             return Math.sqrt( 
                 Math.pow(pos1.x - pos2.x, 2) +
                 Math.pow(pos1.y - pos2.y, 2) +
                 Math.pow(pos1.z - pos2.z, 2)
              );
-        }
-    
-        function getClosestImageTags(){
-            let imageTags = [];
-            if(!observers['pose']) return imageTags;
-            tags
-            .filter(tag => tag.media.type === 'photo')
-            .filter(tag => euclideanDistance3D(observers['pose'].position, tag.anchorPosition) <= galleryDistance)
-            .forEach(tag => {
-                // TODO extract tags and src
-                imageTags.push(tag);
-            });
-            return imageTags;
         }
     }
 

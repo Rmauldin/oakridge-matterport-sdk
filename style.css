@@ -88,12 +88,33 @@ body{
 #gallery{
     display: none;
     flex-flow: row nowrap;
-    height: 130px;
+    height: fit-content;
     /* width: fit-content; */
     background: rgba(0,0,0,.45);
     position: absolute;
     top: 0;
     right: 410px;
     left: 400px;
+    overflow-x: scroll;
     max-width: calc(100% - 379px - 410px);
+    transition: all .4s ease-in-out;
+}
+#gallery::-webkit-scrollbar{
+    background: rgba(0,0,0,.45);
+}
+#gallery > div{
+    position: relative;
+    flex: 0 1 20%;
+    height: 130px;
+    transition: all .4s ease-in-out;
+}
+#gallery > div:hover{
+    height: 180px;
+    cursor: pointer;
+}
+#gallery > div > img {
+    height: 100%;
+    width: auto;
+    position: absolute;
+    transition: all .4s ease-in-out;
 }
