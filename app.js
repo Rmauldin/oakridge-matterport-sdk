@@ -4,15 +4,14 @@ const sdkVersion = '3.5';
 const params = "&play=1";
 const menuParams = "&play=1&qs=1";
 const initSpace = "YJx1weuenGk";
-const galleryDistance = 10; // meters
+const galleryDistance = 15; // meters
 const spaces = {
     "Elementary School": "YJx1weuenGk", 
     "Middle School": "MZuYopSBizg", 
     "Lunch Area And Playground": "TvkHYt3AYKe", 
     "Preschool": "ZMS7QHBGaDH"
 };
-let arrow, title, menu, iframe, modal, gallery_container;
-// const school_regex = /\((https?:\/\/(?:www\.)?oakridgeschool.org\/?.*?)\)/;
+let arrow, title, menu, iframe, modal, gallery_container, gallery;
 
 document.addEventListener('DOMContentLoaded', ()=>{
     arrow = document.getElementById('space-menu-toggle');
@@ -24,6 +23,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
     iframe.addEventListener('load', showcaseLoader, true);
 
     setupSpaceMenu();
+    gallery = document.getElementById('mattertag-gallery');
+    const arrow_hide = document.getElementById('mattertag-gallery-toggle');
+    setupArrowGallery(arrow_hide);
 });
 
 function showcaseLoader(){
@@ -43,7 +45,6 @@ function showcaseLoader(){
 async function loadedShowcaseHandler(sdk){
     console.debug('SDK Connected');
     const menu_container = document.getElementById('menu-container');
-    const gallery = document.getElementById('mattertag-gallery');
     const observers = setupObservers();
     const tags = await setupTags();
     setupGallery(tags);
@@ -87,9 +88,7 @@ async function loadedShowcaseHandler(sdk){
     }
 
     function setupGallery(tags){
-        const arrow_hide = document.getElementById('mattertag-gallery-toggle');
-        setupArrowGallery(arrow_hide);
-
+        
         populateGallery(getClosestImageTags());
         sdk.on(sdk.Sweep.Event.ENTER, (oldID, newID) => {
             let imageTags = getClosestImageTags();
@@ -131,23 +130,6 @@ async function loadedShowcaseHandler(sdk){
             });
             return photoTags.filter(tag => tag.distance <= galleryDistance);
         }
-
-        function setupArrowGallery(arr){
-            
-            arr.addEventListener('click', toggleHidden);
-
-            function toggleHidden(){
-                toggleArrow(arr.children[0]);
-                gallery.style.height = gallery.style.height === "0px" ? "130px" : "0px";
-                arr.style.top = arr.style.top === "0px" ? "130px" : "0px";
-            }
-
-            // function makeHidden(){
-            //     closeArrow(arr.children[0]);
-            //     gallery.style.height = "0px";
-            //     arr.style.top = "0px";
-            // }
-        }
     }
 
 }   
@@ -178,11 +160,21 @@ function setupSpaceMenu(){
             title.classList.toggle('hidden');
             menu.classList.toggle('hidden');
 
-            toggleArrow(arrow.children[0]);
-            
+            toggleArrow(arrow.children[0]);         
         });
     }
 
+}
+
+function setupArrowGallery(arr){
+            
+    arr.addEventListener('click', toggleHidden);
+
+    function toggleHidden(){
+        toggleArrow(arr.children[0]);
+        gallery.style.height = gallery.style.height === "0px" ? "130px" : "0px";
+        arr.style.top = arr.style.top === "0px" ? "130px" : "0px";
+    }
 }
 
 // utility functions
