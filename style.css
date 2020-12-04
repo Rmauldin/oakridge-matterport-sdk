@@ -77,94 +77,12 @@ body{
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
 }
-#arrow-gallery{
-    border: solid #fff;
-    border-width: 0 1px 1px 0;
-    display: inline-block;
-    margin-left: 11px;
-    margin-top: 5px;
-    width: 5px;
-    height: 5px;
-    padding: 1px;
-    transform: rotate(225deg);
-    -webkit-transform: rotate(225deg);
-}
 .hidden{
-    /* display: none; */
     width: 0;
     overflow-x: hidden;
     transition: all .4s ease-in-out;
 }
 .hidden > *{
     display: none;
-    transition: all .4s ease-in-out;
-}
-
-#mattertag-gallery-container{
-    display: none;
-    flex-flow: column nowrap;
-}
-#mattertag-gallery-toggle{
-    width: 30px;
-    height: 35px;
-    position: absolute;
-    display: inherit;
-    justify-items: center;
-    align-items: center;
-    background-color: rgba(0,0,0,.45);
-    /* right: calc(100% - 410px); */
-    right: 0;
-    top: 130px;
-    transition: all .4s ease-in-out;
-}
-#mattertag-gallery-toggle:hover{
-    background-color: rgba(0,0,0,.75);
-    cursor: pointer;
-}
-#mattertag-gallery{
-    box-sizing: content-box;
-    display: inherit;
-    flex-flow: row nowrap;
-    min-height: fit-content;
-    background: rgba(0,0,0,.45);
-    position: absolute;
-    top: 0;
-    right: 0;
-    /* right: 410px; */
-    left: 410px;
-    height: 130px;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    /* max-width: calc(100% - 379px); */
-    transition: all .4s ease-in-out;
-}
-#mattertag-gallery::-webkit-scrollbar{
-    background: rgba(0,0,0,0);
-}
-#mattertag-gallery::-webkit-scrollbar-thumb{
-    background:rgba(181,180,179,.5);
-    border-radius: 5px;
-    margin-left: 15px;
-    margin-right: 15px;
-    width: 10px;
-}
-#mattertag-gallery::-webkit-scrollbar-track{
-    background: rgba(0,0,0,0);
-}
-.mattertag-gallery-item{
-    transition: all .4s ease-in-out;
-    height: 100px;
-    width: auto;
-    flex: 0 0 auto;
-    border: 1px solid rgba(0,0,0,0);
-    margin: 10px 10px 0 10px;
-}
-.mattertag-gallery-item:hover{
-    cursor: pointer;
-    border: 1px solid #ff3158;
-}
-.mattertag-gallery-item img {
-    height: 100%;
-    width: auto;
     transition: all .4s ease-in-out;
 }
